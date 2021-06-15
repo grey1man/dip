@@ -90,9 +90,13 @@ function forward()
   {
     ask_hours();
   }
-  document.getElementById("form_" + formNumber).hidden = true;
-  formNumber += 1
-  document.getElementById("form_" + formNumber).hidden = false;
+  if (formNumber < 3)
+  {
+    document.getElementById("form_" + formNumber).hidden = true;
+    formNumber += 1
+    document.getElementById("form_" + formNumber).hidden = false;
+  }
+  
 }
 
 async function ask_hours()
@@ -116,11 +120,11 @@ async function ask_hours()
       body: JSON.stringify(data)
     })
     let commits = await response.json();
-    if (commits.err == 1)
-    {
-      alert('Неправильно заполнена первая страница, либо данных о этой дисциплине не существует, часы выставлены не будут')
-    }
-    else
+    //if (commits.err == 1)
+    //{
+    //  alert('Неправильно заполнена первая страница, либо данных о этой дисциплине не существует, часы выставлены не будут')
+    //}
+    if (commits.err != 1)
     {
       document.getElementById('hours_lec').innerText = commits.lections
       document.getElementById('hours_prac').innerText = commits.practise
@@ -131,9 +135,13 @@ async function ask_hours()
 
 function backward()
 {
-  document.getElementById("form_" + formNumber).hidden = true;
-  formNumber -= 1
-  document.getElementById("form_" + formNumber).hidden = false;
+  if (formNumber > 0)
+  {
+    document.getElementById("form_" + formNumber).hidden = true;
+    formNumber -= 1
+    document.getElementById("form_" + formNumber).hidden = false;
+  }
+  
 }
 
 function move_to(block_number, quantity, form)
@@ -187,12 +195,12 @@ function new_row(val)
   parent = document.getElementById("table_srs")
   elem = document.createElement('tr')
   elem.innerHTML = '<tr> \
-  <td > <input type="text" size="10"> </td> \
-  <td>  <input size="10" list="themes" onchange="new_row(this)" contenteditable="true"> </td> \
-  <td> <input type="text" size="10"> </td> \
-  <td> <input type="text" size="10"> </td> \
-  <td> <input type="text" size="10"> </td> \
-  <td> <input type="text" size="10"> </td> \
+  <td > <input type="text" size="5"> </td> \
+  <td>  <input style="width: 350px" size="10" list="themes" onchange="new_row(this)" contenteditable="true"> </td> \
+  <td> <input onchange= "save(); hours_evalv()"  type="text" size="5"> </td> \
+  <td> <input onchange= "save(); hours_evalv()"  type="text" size="5"> </td> \
+  <td> <input onchange= "save(); hours_evalv()"  type="text" size="5"> </td> \
+  <td> <input onchange= "save(); hours_evalv()"  type="text" size="5"> </td> \
 </tr>'
   //бред сивой кобылы
   //document.getElementById('themes').innerHTML += '<option value="УК-5"></option>'
@@ -246,6 +254,10 @@ function save()
   //сейвим с четвертой
   localStorage.setItem('structure_srs', document.getElementById('structure_srs').innerHTML)
   localStorage.setItem('content_srs', document.getElementById('content_srs').innerHTML)
+  localStorage.setItem('hours_lec', document.getElementById('hours_lec').innerHTML)
+  localStorage.setItem('hours_prac', document.getElementById('hours_prac').innerHTML)
+  localStorage.setItem('hours_lab', document.getElementById('hours_lab').innerHTML)
+  localStorage.setItem('hours_srs', document.getElementById('hours_srs').innerHTML)
   localStorage.setItem('week_number', week_number)
   var cont_values = []
   parent = document.getElementById('row_1')
@@ -302,6 +314,10 @@ function load()
   //заполняем четвертую
   document.getElementById('structure_srs').innerHTML = localStorage.getItem('structure_srs')
   document.getElementById('content_srs').innerHTML = localStorage.getItem('content_srs')
+  document.getElementById('hours_srs').innerHTML = localStorage.getItem('hours_srs')
+  document.getElementById('hours_lec').innerHTML = localStorage.getItem('hours_lec')
+  document.getElementById('hours_prac').innerHTML = localStorage.getItem('hours_prac')
+  document.getElementById('hours_lab').innerHTML = localStorage.getItem('hours_lab')
   //week_number = localStorage.getItem('week_number')
   var cont_values = JSON.parse(localStorage.getItem("cont_values"));
   parent = document.getElementById('row_1')
@@ -476,7 +492,7 @@ function delete_table_srs()
   if (parent.childElementCount > 6)
   {
     parent.children[parent.childElementCount - 3].remove()
-    parent.children[parent.childElementCount - 3].children[1].onkeypress = 'new_row()'
+    parent.children[parent.childElementCount - 3].children[1].onchange = 'new_row()'
     parent.children[parent.childElementCount - 3].children[1].setAttribute('onkeypress','new_row()')
   }
 }
@@ -484,6 +500,7 @@ function delete_table_srs()
 function preview()
 {
   save()
+  tables_transform()
   toc_flag = 0
   localStorage.setItem('bef_prev' , document.getElementById('body').innerHTML)
   titul_top = `<div class = "titul_top"><font size="3">Министерство образования и науки Российской федерации <p></p>
@@ -574,7 +591,8 @@ function titul()
     elem = elem.children[4]
     elem = elem.children[6]
     elem = elem.children[1]
-    elem = elem.children[0].innerHTML = titul_bottom
+    elem.children[0].innerHTML = ''
+    elem.children[0].innerHTML = titul_bottom
   
   if (document.getElementById('mark2').innerHTML === "")
   {
@@ -613,10 +631,69 @@ function toc()
   return sod
 }
 
-setInterval(save, 30000);
+function tables_transform()
+{
+  var table_1 = document.getElementById('row_1')
+  var data
+  for (var i = 1; i < table_1.childElementCount; i++)
+  {
+    var test = table_1.children[i]
+    data = table_1.children[i].children[0].children[0].value
+    table_1.children[i].children[0].children[0].remove()
+    table_1.children[i].children[0].innerHTML = data
+  }
+
+  var table_2 = document.getElementById('table_srs')
+  var tmp
+  var i = 3
+  while (table_2.children[i].id != 'total')
+  {
+    tmp = table_2.children[i]
+    for (var j = 0; j < tmp.childElementCount; j++)
+    {
+      test = tmp.children[j]
+      data = tmp.children[j].children[0].value
+      tmp.children[j].children[0].remove()
+      tmp.children[j].innerHTML = data
+    }
+    i += 1
+
+  }
+}
+
+function hours_evalv()
+{
+  var table_2 = document.getElementById('table_srs')
+  var tmp
+  var i = 3
+  lec = 0
+  prac = 0
+  lab = 0
+  srs = 0
+  while (table_2.children[i].id != 'total')
+  {
+    tmp = table_2.children[i]
+    lec += parseInt(tmp.children[2].children[0].value)
+    prac += parseInt(tmp.children[3].children[0].value)
+    lab += parseInt(tmp.children[4].children[0].value)
+    srs += parseInt(tmp.children[5].children[0].value)
+    i += 1
+  }
+  document.getElementById('hours_lec').innerHTML = lec
+  document.getElementById('hours_prac').innerHTML = prac
+  document.getElementById('hours_lab').innerHTML = lab
+  document.getElementById('hours_srs').innerHTML = srs
+}
+
+addEventListener("keydown", function(event) {
+  if (event.keyCode == 27)
+    window.location.href = "http://localhost:3000/wp?log_in=1";
+});
+
+//setInterval(save, 30000);
 
 //костыль, но иначе никак, наверное
-setInterval(titul, 100);
+//setInterval(titul, 100);
 
 /*
 function weeks()

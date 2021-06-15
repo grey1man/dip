@@ -18,6 +18,12 @@ form {
 img.intLink { border: 0; }
 #toolBar1 select{ font-size:10px; background-color: #fff }
 
+#text_col {min-width: 100mm}
+.text_col_2{overflow: scroll}
+textarea::-webkit-scrollbar{
+  width: 0;
+  }
+
 .textBox {
   min-width: 210mm;
   max-height: 100mm;
@@ -116,10 +122,22 @@ img.intLink { border: 0; }
       content: "";
   }
   }
-  
   @page {
     @bottom-center {
       content: "";
   }
   }
   
+  @page {
+    @bottom-center {
+          content: counter(page);
+    }
+  }
+
+ 
+  .pagedjs_first_page  {
+    @bottom-center {
+      content: "";
+  }
+  }
+ 

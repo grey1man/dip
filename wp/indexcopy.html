@@ -9,9 +9,9 @@
         </script>
 		
 		 <!-- Bootstrap CSS (jsDelivr CDN) -->
-  <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-   Bootstrap Bundle JS (jsDelivr CDN) 
-  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+  <!-- Bootstrap Bundle JS (jsDelivr CDN) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" type="text/css" href="wp.css" />
         <style type="text/css" src="wp.css"></style>
@@ -684,7 +684,7 @@
                 <tbody id = "table_srs">
                     <tr>
                         <td rowspan="2">№ п/п</td>
-                        <td id = 'text_col' rowspan="2">Разделы, темы дисциплин</td>
+                        <td rowspan="2">Разделы, темы дисциплин</td>
                         <td colspan="4">Виды контактной работы с преподавателем</td>
                     </tr>
                     <tr>
@@ -697,14 +697,14 @@
                         <td colspan="6" contenteditable="true" id = 'semester'>Семестр</td>
                     </tr>
                     <tr>
-                        <td > <input onchange= "save(); hours_evalv()" type="text" size="1"> </td>
-                        <td> <input style="width: 350px" onchange= "save()" list="themes" size="10" onchange="new_row(this)" contenteditable="true">
+                        <td > <input onchange= "save()" type="text" size="10"> </td>
+                        <td> <input onchange= "save()" list="themes" size="10" onchange="new_row(this)" contenteditable="true">
                             <datalist id="themes">
                             </datalist> </td>
-                        <td> <input onchange= "save(); hours_evalv()" type="text" size="1"> </td>
-                        <td> <input onchange= "save(); hours_evalv()" type="text" size="1"> </td>
-                        <td> <input onchange= "save(); hours_evalv()" type="text" size="1"> </td>
-                        <td> <input onchange= "save(); hours_evalv()" type="text" size="1"> </td>
+                        <td> <input onchange= "save()" type="text" size="10"> </td>
+                        <td> <input onchange= "save()" type="text" size="10"> </td>
+                        <td> <input onchange= "save()" type="text" size="10"> </td>
+                        <td> <input onchange= "save()" type="text" size="10"> </td>
                     </tr>
                     <tr id = "total"> 
                         <td colspan="2">Всего часов</td>
